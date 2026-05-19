@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:include filename="$(find qxwy_description)/urdf/qxwy/common_inertial.xacro"/>
+
+    <xacro:macro name="camera_xacro" params="xyz">
+        <link name="camera_link">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="0.02 0.10 0.02"/>
+                </geometry>
+                <material name="black">
+                    <color rgba="0.0 0.0 0.0 1.0"/>
+                </material>
+            </visual>
+
+            <collision>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="0.02 0.10 0.02"/>
+                </geometry>
+                <material name="black">
+                    <color rgba="0.0 0.0 0.0 0.5"/>
+                </material>
+            </collision>
+
+             <xacro:box_inertial mass="0.1" x="0.02" y="0.10" z="0.02">
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+            </xacro:box_inertial>
+        </link>
+
+        <link name="camera_optical_link"/>
+
+        <joint name="camera_joint" type="fixed">
+            <parent link="base_link"/>
+            <child link="camera_link"/>
+            <origin xyz="${xyz}" rpy="0.0 0.0 0.0"/>
+        </joint>
+
+        <joint name="camera_optical_joint" type="fixed">
+            <parent link="camera_link"/>
+            <child link="camera_optical_link"/>
+            <origin xyz="0 0 0" rpy="${-pi/2} 0.0 ${-pi/2}"/>
+        </joint>
+        
+        <gazebo reference="camera_link">
+            <sensor type="camera" name="camera_name">
+                <always_on>true</always_on>
+                <update_rate>30.0</update_rate>
+                <visualize>true</visualize>
+                <topic>camera</topic>
+
+                <camera>
+                    <horizontal_fov>1.047</horizontal_fov>
+                    <image>
+                    <width>320</width>
+                    <height>240</height>
+                    <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                    <near>0.1</near>
+                    <far>1000.0</far>
+                    </clip>
+                
+                    <rolling_shutter>false</rolling_shutter>
+
+                    <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.0</stddev>
+                    </noise>
+                
+                </camera>
+            </sensor>
+
+            <sensor name="depth_camera_name" type="depth_camera">
+                <always_on>true</always_on>
+                <update_rate>10</update_rate>
+                <topic>depth_camera</topic>
+                <camera>
+                    <horizontal_fov>1.05</horizontal_fov>
+                    <image>
+                    <width>256</width>
+                    <height>256</height>
+                    <format>R_FLOAT32</format>
+                    </image>
+                    <clip>
+                    <near>0.1</near>
+                    <far>10.0</far>
+                    </clip>
+
+                    <depth_camera>
+                        <output>depth</output>
+                    </depth_camera>
+                </camera>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+</robot>

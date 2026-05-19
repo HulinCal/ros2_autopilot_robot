@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<robot name="fish_robot">
+    <!-- 机器人的身体部分 -->
+    <link name="base_link">
+        <!--部件的外观 -->
+        <visual>
+            <!--沿着自己的几何中心的偏移和旋转量 -->
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>  
+
+            <geometry>
+                <cylinder radius="0.1" length="0.12"/>   
+            </geometry>  
+
+            <material name="white">
+                <color rgba="1.0 1.0 1.0 0.5"/>
+            </material>
+        </visual>
+    </link>
+    
+    <!-- IMU部件，惯性测量传感器-->
+        <link name="imu_link">
+        <!--部件的外观 -->
+        <visual>
+            <!--沿着自己的几何中心的偏移和旋转量 -->
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>  
+
+            <geometry>
+                <box size="0.02 0.02 0.02"/>   
+            </geometry>  
+
+            <material name="black">
+                <color rgba="0.0 0.0 0.0 0.5"/>
+            </material>
+        </visual>
+    </link>
+
+    <!--机器人的关节-->
+    <joint name="imu_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="imu_link"/>
+        <origin xyz="0.0 0.0 0.03" rpy="0.0 0.0 0.0"/>
+    </joint>
+</robot>

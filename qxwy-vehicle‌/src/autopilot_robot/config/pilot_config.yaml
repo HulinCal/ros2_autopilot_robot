@@ -1,0 +1,10 @@
+/pilot_node:
+  ros__parameters:
+    initial_point: [0.57, -0.9, 0.0]
+    target_point: [
+      4.4, 1.0, 0.93,
+      6.0, -0.4, 0.0,
+      1.9, -4.15, 1.0,
+      9.0, -2.7, 2.0
+    ]
+    use_sim_time: false

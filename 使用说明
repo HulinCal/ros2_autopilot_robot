@@ -1,0 +1,77 @@
+1 打开终端进入qxwy_ws目录
+2 输入：colcon build  
+3 输入：source install/setup.bash
+4 输入： ros2 launch qxwy_description gazebo_sim.launch.py
+5 启动gazebo模拟程序后，点击左下角的开始模拟按钮（点击开始后，下面两个控制器才能激活，注：已经更改为自动开始模拟，不用再点击）
+6 分别启动两个控制器（7秒内按启动模拟按钮可自动加载这两条命令）：
+    ros2 control load_controller qxwy_joint_state_broadcaster --set-state active
+    ros2 control load_controller qxwy_diff_drive_controller --set-state active
+ 7 启动键盘发布器（通过键盘上的按钮控制小车运动）：
+   ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p stamped:=true
+   （这个命令会让 teleop_twist_keyboard 直接发布 TwistStamped 消息（而不是常见的Twist消息），
+      与控制器的期望类型匹配，从而实现对小车的控制）
+           
+ 8 运行slam_toolbox   (建图--发布/map话题)  
+ 	ros2 launch slam_toolbox online_async_launch.py
+ 	
+ 	
+ 	
+9 存储已经扫描好的地图
+  1.进入qxwy_navigation2/maps目录
+  2.运行：ros2 run nav2_map_server map_saver_cli -f room
+ 	
+
+10 转换话题，移动小车只接收/cmd_vel_stamped话题，但是nav2默认发/cmd_vel,
+（在yaml更改也没用：
+	controller_server:
+	  ros__parameters:
+	    cmd_vel_topic: cmd_vel_stamped  # 加这一行）
+    
+  话题转换命令：ros2 run topic_tools relay /cmd_vel /cmd_vel_stamped
+ 	   
+ 11 测试小车是否能动（已测试）：	   
+ros2 topic pub --rate 10 --qos-reliability best_effort /cmd_vel geometry_msgs/msg/TwistStamped "{header: {frame_id: base_link}, twist: {linear: {x: 0.2}, angular: {z: 0.0}}}" 	   
+ 	   
+ 	   
+12 发送自定义的话题 	   
+ 	   ros2 topic pub /nav/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.2}, angular: {z: 0.0}}"
+ 	   
+13 自动巡航（记得加参数的绝对路径）： 	   
+ 	   ros2 run autopilot_robot pilot_node --ros-args --params-file /home/hl/chapt7/chapt7_ws/src/autopilot_robot/config/pilot_config.yaml
+
+ 	   
+ 	   
+ 	   
+14 语音测试：
+  先运行：ros2 run autopilot_robot speaker
+  另外一个终端：ros2 service call /speach_text autopilot_interfaces/srv/SpeachText "{text: 'ni hao'}"
+  
+15 自动循环及语音播报已经放一起了 
+ 	ros2 launch autopilot_robot autopilot_launch.py
+ 	   
+解决话题不一致（激光雷达默认发/lidar,slam_toolbox默认订阅/scan）的问题（数据相同的情况）：   
+方法一：
+# 1. 话题转发：/lidar → /scan
+	ros2 run topic_tools relay /lidar /scan
+	
+# 2. 发布雷达 TF（如果已经在launch中转换，就不用运行了）
+ros2 run tf2_ros static_transform_publisher 0 0 0.1 0 0 0 base_link laser
+
+# 3. 启动 SLAM（什么参数都不用加）
+ros2 launch slam_toolbox online_async_launch.py
+
+方法二：
+1.引入传感器时，设置topic,如下面:
+            <sensor name='gpu_lidar' type='gpu_lidar'>
+                <topic>scan</topic>
+                <update_rate>10</update_rate>
+               </sensor>
+2.在桥接时，    在 arguments中添加：       
+  '/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan'，如下面：
+          arguments=[
+            '/camera@sensor_msgs/msg/Image@gz.msgs.Image',
+            #'/camera/depth@sensor_msgs/msg/Image@gz.msgs.Image', #这个没用
+            '/camera/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo',
+            '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
+            '/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan'
+        ],

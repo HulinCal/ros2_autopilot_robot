@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:include filename="$(find qxwy_description)/urdf/qxwy/common_inertial.xacro"/>
+
+    <xacro:macro name="laser_xacro" params="xyz">
+        <link name="laser_cylinder_link">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="0.01" length="0.1"/>
+                </geometry>
+                <material name="black">
+                    <color rgba="0.0 0.0 0.0 1.0"/>
+                </material>
+            </visual>
+
+            <collision>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="0.01" length="0.1"/>
+                </geometry>
+                <material name="black">
+                    <color rgba="0.0 0.0 0.0 1.0"/>
+                </material>   
+            </collision>
+
+        <xacro:cylinder_inertial mass="0.05" radius="0.01" height="0.1">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:cylinder_inertial>
+        </link>
+
+        <link name="laser_link">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="0.02" length="0.02"/>
+                </geometry>
+                <material name="black">
+                    <color rgba="0.0 0.0 0.0 1.0"/>
+                </material>
+            </visual>
+
+            <collision>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="0.02" length="0.02"/>
+                </geometry>
+                <material name="black">
+                    <color rgba="0.0 0.0 0.0 1.0"/>
+                </material>
+            </collision>
+
+            <xacro:cylinder_inertial mass="0.10" radius="0.02" height="0.02">
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+            </xacro:cylinder_inertial>
+        </link>
+
+        <joint name="laser_joint" type="fixed">
+            <parent link="laser_cylinder_link"/>
+            <child link="laser_link"/>
+            <origin xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/>
+        </joint>
+
+        <joint name="laser_cylinder_joint" type="fixed">
+            <parent link="base_link"/>
+            <child link="laser_cylinder_link"/>
+            <origin xyz="${xyz}" rpy="0.0 0.0 0.0"/>
+        </joint>
+
+        <gazebo reference="laser_cylinder_link">
+            <material>Gazebo/Black</material>
+        </gazebo>
+
+        <!-- 雷达的部件及传感器 -->
+        <gazebo reference="laser_link">
+            <material>Gazebo/Black</material>
+            <sensor name='gpu_lidar' type='gpu_lidar'>
+                <always_on>true</always_on>
+                <topic>scan</topic>
+                <update_rate>20</update_rate>
+                <visualize>true</visualize> 
+                <lidar>
+                    <scan>
+                        <horizontal>
+                            <samples>720</samples>
+                            <resolution>1</resolution>
+                            <min_angle>-3.14159</min_angle>
+                            <max_angle>3.14159</max_angle>
+                        </horizontal>
+
+                    <vertical>
+                        <samples>16</samples>
+                        <resolution>1</resolution>
+                        <min_angle>-0.261799</min_angle>
+                        <max_angle>0.261799</max_angle>
+                    </vertical>
+                    </scan>
+
+                    <range>
+                        <min>0.12</min>
+                        <max>8.0</max>
+                        <resolution>0.01</resolution>
+                    </range>
+
+                    <noise>
+                        <type>gaussian</type>
+                        <mean>0.0</mean>
+                        <stddev>0.01</stddev>
+                    </noise>
+                </lidar>     
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+</robot>

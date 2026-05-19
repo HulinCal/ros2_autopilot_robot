@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="gazebo_control_plugin">
+    <gazebo>
+      <plugin
+        filename="gz-sim-diff-drive-system"
+        name="gz::sim::systems::DiffDrive">
+
+        <ros>
+          <namespace>/</namespace>
+          <remapping>cmd_vel:=cmd_vel</remapping>
+          <remapping>odom</remapping>
+        </ros>
+
+
+        <!-- 左右轮关节名 → 必须和你的 URDF 完全一样 -->
+        <left_joint>left_wheel_joint</left_joint>
+        <right_joint>right_wheel_joint</right_joint>
+
+        <!-- 轮距 & 轮半径 -->
+        <wheel_separation>0.2</wheel_separation>
+        <wheel_radius>0.064</wheel_radius>
+
+        <!-- 话题配置 -->
+        <topic>cmd_vel</topic>
+        <odom_topic>odom</odom_topic>
+
+        <!-- 坐标系 -->
+        <frame_id>odom</frame_id>
+        <child_frame_id>base_footprint</child_frame_id>
+
+        <!-- 输出设置 -->
+        <publish_odom>true</publish_odom>
+        <publish_odom_tf>false</publish_odom_tf>
+        <publish_wheel_tf>false</publish_wheel_tf>
+
+        <odom_publish_frequency>30</odom_publish_frequency>
+
+        <!-- 动力限制 -->
+        <max_wheel_torque>20</max_wheel_torque>
+        <max_wheel_acceleration>1.0</max_wheel_acceleration>
+      </plugin>
+
+      <!---
+      <plugin filename="gz-sim-ros2-joint-state-publisher-system"
+              name="gz::sim::systems::ROS2JointStatePublisher">
+      </plugin>
+      -->
+
+    </gazebo>
+  </xacro:macro>
+</robot>
