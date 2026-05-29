@@ -40,7 +40,7 @@ def generate_launch_description():
                 'autostart': 'true',  # 自动激活所有节点
                 # 'amcl': 'true',
                 'cmd_vel_reliability': 'BEST_EFFORT',
-                'cmd_vel_topic': '/nav/cmd_vel',
+                'cmd_vel_topic': '/cmd_vel_nav',
                 'use_sim_time': 'true',
                 }.items(),         
         ),

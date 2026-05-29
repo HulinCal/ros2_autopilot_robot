@@ -11,7 +11,7 @@ class TwistConverter(Node):
         self.sub = self.create_subscription(Twist, '/cmd_vel_nav', self.cb, 10)
 
         # 🔥 关键：发布时强制 BEST_EFFORT！
-        qos = QoSProfile(reliability=QoSReliabilityPolicy.BEST_EFFORT, depth=10)
+        qos = QoSProfile(reliability=QoSReliabilityPolicy.RELIABLE, depth=10)
         self.pub = self.create_publisher(TwistStamped, '/cmd_vel', qos)
 
     def cb(self, msg):
