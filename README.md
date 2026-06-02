@@ -1,14 +1,20 @@
 #机器人自动驾驶系统
+robot view:
 ![robot view](https://github.com/HulinCal/ros2_autopilot_robot/blob/main/qxwy-vehicle%E2%80%8C/src/assets/robot.png)
 
+lidar image view:
 ![lidar view](https://github.com/HulinCal/ros2_autopilot_robot/blob/main/qxwy-vehicle%E2%80%8C/src/assets/lidar.png)
 
+rgb image view:
 ![rgb image view](https://github.com/HulinCal/ros2_autopilot_robot/blob/main/qxwy-vehicle%E2%80%8C/src/assets/color.png)
 
+depth image view:
 ![depth image view](https://github.com/HulinCal/ros2_autopilot_robot/blob/main/qxwy-vehicle%E2%80%8C/src/assets/depth.png)
 
+navigation1:
 ![navigation image1 view](https://github.com/HulinCal/ros2_autopilot_robot/blob/main/qxwy-vehicle%E2%80%8C/src/assets/nav.png)
 
+navigation2:
 ![navigation view](https://github.com/HulinCal/ros2_autopilot_robot/blob/main/qxwy-vehicle%E2%80%8C/src/assets/nav2.git)
 
 ## 项目功能
