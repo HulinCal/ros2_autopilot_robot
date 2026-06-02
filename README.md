@@ -22,7 +22,7 @@
 
 
                                         navigation2:
-![navigation view](https://github.com/HulinCal/ros2_autopilot_robot/blob/main/qxwy-vehicle%E2%80%8C/src/assets/nav2.git)
+![navigation view](https://github.com/HulinCal/ros2_autopilot_robot/blob/main/qxwy-vehicle%E2%80%8C/src/assets/nav2.gif)
 
 ## 项目功能
 
