@@ -1,4 +1,15 @@
 #机器人自动驾驶系统
+![robot view](./qxwy-vehicle/src/assets/robot.png)
+
+![lidar view](./qxwy-vehicle/src/assets/lidar.png)
+
+![rgb image view](./qxwy-vehicle/src/assets/color.png)
+
+![depth image view](./qxwy-vehicle/src/assets/depth.png)
+
+![navigation image1 view](./qxwy-vehicle/src/assets/nav.png)
+
+![navigation view](./qxwy-vehicle/src/assets/nav2.gif)
 
 ## 项目功能
 
