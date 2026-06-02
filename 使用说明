@@ -1,3 +1,8 @@
+下载源码，进入ros2_autopilot_robot目录，
+编译源码：开启GPU,不然很慢
+colcon build --cmake-args -DGGML_CUDA=ON -DCMAKE_BUILD_TYPE=Release
+注意编译whisper_ros时需要下载whisper.cpp.因为需要连接网络。
+
 （一）使用键盘控制小车移动
     1 打开终端进入ros2_autopilot_robot目录
     2 输入：colcon build  
